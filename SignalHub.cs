@@ -14,7 +14,19 @@ public class SignalHub : Hub
 
     public async Task SendFrame(string userId, byte[] imageBytes)
     {
-        await Clients.Group(userId)
-            .SendAsync("ReceiveFrame", userId, imageBytes);
+        try
+        {
+            Console.WriteLine($"Frame received: {imageBytes?.Length} bytes for {userId}");
+
+            await Clients.Group(userId)
+                .SendAsync("ReceiveFrame", userId, imageBytes);
+
+            Console.WriteLine("Frame sent successfully.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"ERROR: {ex}");
+            throw;
+        }
     }
 }
