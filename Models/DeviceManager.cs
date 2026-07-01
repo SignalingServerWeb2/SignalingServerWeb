@@ -1,10 +1,10 @@
 using System.Collections.Concurrent;
 
-namespace MyWebServer.Models
+namespace SignalingServerWeb.Models
 {
     public static class DeviceManager
     {
         public static ConcurrentDictionary<string, DeviceInfo> Devices
-            = new ConcurrentDictionary<string, DeviceInfo>();
+            = new();
     }
 }
