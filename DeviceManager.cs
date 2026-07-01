@@ -1,6 +1,6 @@
 using System.Collections.Concurrent;
 
-namespace MyWebServer.Models
+namespace MyWebServer;
 {
     public static class DeviceManager
     {
