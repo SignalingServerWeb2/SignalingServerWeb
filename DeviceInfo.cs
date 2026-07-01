@@ -1,4 +1,4 @@
-namespace MyWebServe;
+namespace MyWebServer;
 {
     public class DeviceInfo
     {
