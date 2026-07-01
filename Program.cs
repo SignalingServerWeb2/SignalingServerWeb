@@ -1,12 +1,11 @@
-using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using MyWebServer;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSignalR(options =>
-{
-    // Allow larger image frames (10 MB)
-    options.MaximumReceiveMessageSize = 10 * 1024 * 1024;
-});
+builder.Services.AddSignalR();
 
 builder.Services.AddCors(options =>
 {
@@ -21,12 +20,10 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-app.UseRouting();
-
 app.UseCors();
 
-app.MapGet("/", () => "SignalR Server Running");
+app.MapGet("/", () => "Signaling server is running");
 
-app.MapHub<SignalHub>("/signal");
+app.MapHub<SignalHub>("/signalhub");
 
 app.Run();
