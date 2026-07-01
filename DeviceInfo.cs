@@ -1,4 +1,4 @@
-namespace MyWebServer.Models
+namespace MyWebServe;
 {
     public class DeviceInfo
     {
