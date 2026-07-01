@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.SignalR;
-using MyWebServer.Models;
+using MyWebServer;
 
 namespace MyWebServer
 {
