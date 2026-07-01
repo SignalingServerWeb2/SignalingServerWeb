@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.SignalR;
 
-
 namespace MyWebServer
 {
     public class SignalHub : Hub
@@ -17,10 +16,8 @@ namespace MyWebServer
                 ConnectedAt = DateTime.UtcNow
             };
 
-            // Device joins its own group
             await Groups.AddToGroupAsync(Context.ConnectionId, deviceId);
 
-            // Notify all admins that the device list changed
             await Clients.All.SendAsync(
                 "DeviceListUpdated",
                 DeviceManager.Devices.Values.ToList());
@@ -28,7 +25,6 @@ namespace MyWebServer
             Console.WriteLine($"Device Registered: {computerName} ({deviceId})");
         }
 
-        // Send current device list to one admin
         public async Task GetDevices()
         {
             await Clients.Caller.SendAsync(
@@ -36,7 +32,6 @@ namespace MyWebServer
                 DeviceManager.Devices.Values.ToList());
         }
 
-        // Admin starts watching a device
         public async Task WatchDevice(string deviceId)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, deviceId);
@@ -44,21 +39,10 @@ namespace MyWebServer
             Console.WriteLine($"Admin is watching {deviceId}");
         }
 
-        // Receive screen frame from remote device
         public async Task SendFrame(string deviceId, byte[] frameBytes)
         {
-            try
-            {
-                Console.WriteLine($"Frame received: {frameBytes.Length} bytes from {deviceId}");
-
-                await Clients.Group(deviceId)
-                    .SendAsync("ReceiveFrame", deviceId, frameBytes);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-                throw;
-            }
+            await Clients.Group(deviceId)
+                .SendAsync("ReceiveFrame", deviceId, frameBytes);
         }
 
         public override async Task OnDisconnectedAsync(Exception? exception)
@@ -73,8 +57,6 @@ namespace MyWebServer
                 await Clients.All.SendAsync(
                     "DeviceListUpdated",
                     DeviceManager.Devices.Values.ToList());
-
-                Console.WriteLine($"Device Disconnected: {device.ComputerName}");
             }
 
             await base.OnDisconnectedAsync(exception);
